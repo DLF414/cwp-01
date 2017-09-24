@@ -34,7 +34,6 @@ let summaryScript_code =
                 console.log("Ошибка пути");
             }
             else {
-
                 let TxtFilesDir = createTxtFilesDirectory();
                 createSummaryScriptFile();
                 setCopyright();
@@ -43,7 +42,6 @@ let summaryScript_code =
             }
         }
     )
-
 })();
 
 function setCopyright() {
@@ -85,12 +83,10 @@ function createTxtFilesCopy(dir, TxtFilesDir) {
             console.log(err);
         else {
             for (let file in files) {
-
                 let CurrentDirOrFile = `${dir}\\${files[file]}`;                              //путь для просмотра
                 if (fs.statSync(CurrentDirOrFile).isDirectory()) {
                     createTxtFilesCopy(CurrentDirOrFile, TxtFilesDir);
                 } else {
-
                     if (path.extname(CurrentDirOrFile) === EXTNAME_TXT) {
                         fs.readFile(CurrentDirOrFile, 'utf8', (err, data) => {
                             if (err) {
@@ -98,9 +94,7 @@ function createTxtFilesCopy(dir, TxtFilesDir) {
                             }
                             else {
                                 writeDataToTxt(TxtFilesDir + path.sep + files[file], data);
-
                             }
-
                         });
                     }
                 }
@@ -122,11 +116,13 @@ function writeDataToTxt(filePath, data) {
     });
 }
 
-function whatchDir(dirForTxt) {
-    fs.watch(dirForTxt, (eventType, filename) => {
+function whatchDir(TxtFilesDir) {
+    fs.watch(TxtFilesDir +"\\"+ path.basename(DIR_PATH), (eventType, filename) => {
+        console.log(`event type is: ${eventType}`);
         if (filename) {
-            console.log(filename);
-
+            console.log(`filename provided: ${filename}`);
+        } else {
+            console.log('filename not provided');
         }
     });
 }
